@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Luvurl</string>
+    <string name="new_search">New Search</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>
