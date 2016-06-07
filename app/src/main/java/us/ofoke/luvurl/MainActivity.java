@@ -1,10 +1,16 @@
 package us.ofoke.luvurl;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -18,11 +24,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity {
-//public class MainActivity extends Activity {
+//public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     public static final String TAG = "Link";
     private DatabaseReference mRef;
@@ -32,16 +38,14 @@ public class MainActivity extends AppCompatActivity {
 
     private WebView myWebView;
 
-    private FABToolbarLayout layout;
-    private View fab;
+    private BottomSheetBehavior<View> behavior;
+    private BottomSheetDialog dialog;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        layout = (FABToolbarLayout) findViewById(R.id.fabtoolbar);
-        fab = findViewById(R.id.fabtoolbar_fab);
 
         myWebView = (WebView) findViewById(R.id.webview);
 
@@ -51,18 +55,17 @@ public class MainActivity extends AppCompatActivity {
         myWebView.setWebViewClient(new WebViewClient());
         myWebView.loadUrl("https://www.google.com");
 
+        mRef = FirebaseDatabase.getInstance().getReference();
 
+        mLinks = (RecyclerView) findViewById(R.id.rview);
+        mLinks.setHasFixedSize(true);
 
+        mManager = new LinearLayoutManager(this);
+        mManager.setReverseLayout(false);
 
-      //  mLinks = (RecyclerView) findViewById(R.id.rview);
-//        mLinks.setHasFixedSize(true);
-//
-//        mManager = new LinearLayoutManager(this);
-//        mManager.setReverseLayout(false);
-//
-//        mLinks.setLayoutManager(mManager);
+        mLinks.setLayoutManager(mManager);
 
-        //THIS IS TEMP
+       // THIS IS TEMP
 //        mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Link, LinkHolder>(Link.class, R.layout.link, LinkHolder.class, mRef) {
 //            @Override
 //            protected void populateViewHolder(LinkHolder viewHolder, Link model, final int position) {
@@ -80,11 +83,36 @@ public class MainActivity extends AppCompatActivity {
 //        };
 //
 //        mLinks.setAdapter(mRecyclerViewAdapter);
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
+
+        initBottomSheet();
     }
+
+
+    private void initBottomSheet() {
+        View bottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet);
+        behavior = BottomSheetBehavior.from(bottomSheet);
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                // React to state change
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // React to dragging events
+            }
+        });
+    }
+
 
     public void oh(View view){
         String bob = myWebView.getUrl();
         Log.v("bob", bob);
+
+        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     public WebView getMyWebView() {

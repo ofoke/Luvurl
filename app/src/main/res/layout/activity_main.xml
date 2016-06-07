@@ -1,145 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="us.ofoke.luvurl.MainActivity"
+    android:layout_height="match_parent"
+     android:layout_width="match_parent"
+    android:id="@+id/coordinatorLayout">
 
-
+<LinearLayout
 
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="us.ofoke.luvurl.MainActivity">
 
-   <Button
+    >
+
+<!--   <Button
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:onClick="oh"
-       android:text="oh dude"/>
+       android:text="oh dude"/>-->
+
 
    <WebView
        android:id="@+id/webview"
        android:layout_width="match_parent"
-       android:layout_height="400dp"
+       android:layout_height="match_parent"
+       android:nestedScrollingEnabled="true"
        />
 
-   <!-- <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium"
-        android:text="Loved/Unloved URL's over time" />
+</LinearLayout>
 
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/time"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal">
-        <RadioButton android:id="@+id/radio_time_hour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hour "
-            android:onClick="onTimeRadioButtonClicked" />
-        <RadioButton android:id="@+id/radio_time_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="day "
-            android:onClick="onTimeRadioButtonClicked" />
-        <RadioButton android:id="@+id/radio_time_week"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="week "
-            android:onClick="onTimeRadioButtonClicked" />
-        <RadioButton android:id="@+id/radio_time_4ever"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4ever "
-            android:onClick="onTimeRadioButtonClicked" />
-    </RadioGroup>
-
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/luv"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal">
-        <RadioButton android:id="@+id/radio_luv_yes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="love"
-            android:onClick="onLuvRadioButtonClicked" />
-        <RadioButton android:id="@+id/radio_luv_no"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="no love"
-            android:onClick="onLuvRadioButtonClicked" />
-    </RadioGroup>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rview"
+    <LinearLayout
+        android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/link"
-        />
--->
+        android:background="@color/gray"
+        android:elevation="4dp"
+        android:minHeight="80dp"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_vertical_margin"
+        app:behavior_peekHeight="80dp"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+        <TextView
+            android:id="@+id/sheetTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/sheet_title_text"
+            android:textColor="@color/dark_text"
+            android:textSize="18sp"/>
+
+<!--        <TextView
+            android:id="@+id/sheetSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sheetTitle"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:lines="2"
+            android:text="@string/sheet_subtitle_text"
+            android:textColor="@color/dark_text_secondary_icons"
+            android:textSize="16sp"/>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:orientation="horizontal">
 
 
-   <com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
-       android:id="@+id/fabtoolbar"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       app:showDuration="600"
-       app:hideDuration="200"
-       app:horizontalMargin="30dp"
-       app:verticalMargin="30dp"
-       app:fadeInFraction="0.2"
-       app:fabId="@+id/fabtoolbar_fab"
-       app:containerId="@+id/fabtoolbar_container"
-       app:fabToolbarId="@+id/fabtoolbar_toolbar">
+   <RadioGroup
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       android:id="@+id/time"
+       android:layout_gravity="center_horizontal"
+       android:gravity="center_horizontal">
+       <RadioButton android:id="@+id/radio_time_hour"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="hour "
+           android:onClick="onTimeRadioButtonClicked" />
+       <RadioButton android:id="@+id/radio_time_day"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="day "
+           android:onClick="onTimeRadioButtonClicked" />
+       <RadioButton android:id="@+id/radio_time_week"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="week "
+           android:onClick="onTimeRadioButtonClicked" />
+       <RadioButton android:id="@+id/radio_time_4ever"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="4ever "
+           android:onClick="onTimeRadioButtonClicked" />
+   </RadioGroup>
 
-      ...
 
-      <RelativeLayout
-          android:id="@+id/fabtoolbar_container"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_alignParentBottom="true"
-          android:layout_alignParentRight="true">
+   <RadioGroup
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       android:id="@+id/luv"
+       android:layout_gravity="center_horizontal"
+       android:gravity="center_horizontal">
+       <RadioButton android:id="@+id/radio_luv_yes"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="love"
+           android:onClick="onLuvRadioButtonClicked" />
+       <RadioButton android:id="@+id/radio_luv_no"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="no love"
+           android:onClick="onLuvRadioButtonClicked" />
+   </RadioGroup>
 
-         <android.support.design.widget.FloatingActionButton
-             android:id="@+id/fabtoolbar_fab"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rview"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    tools:listitem="@layout/link"
+                    />
 
-             android:src="@drawable/abc_ic_menu_share_mtrl_alpha"/>
 
-         <!--app:fabSize="normal"-->
+            <!--            <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_launcher"/>
 
-      </RelativeLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:text="@string/sheet_more_text"/>-->
+        </LinearLayout>
 
-      <LinearLayout
-          android:id="@+id/fabtoolbar_toolbar"
-          android:layout_width="match_parent"
-          android:layout_height="70dp"
-          android:layout_alignParentBottom="true"
-          android:orientation="horizontal">
 
-         <ImageView
-             android:id="@+id/one"
-             android:layout_width="0dp"
-             android:layout_height="match_parent"
-             android:layout_weight="1"
-             android:scaleType="centerInside"
-             android:src="@drawable/common_google_signin_btn_icon_dark"/>
-         ...
+    </LinearLayout>
 
-      </LinearLayout>
+<!--    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:src="@android:drawable/ic_dialog_email"
+        app:layout_anchor="@id/bottom_sheet"
+        app:layout_anchorGravity="bottom|end"
+        />-->
 
-   </com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout>
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
