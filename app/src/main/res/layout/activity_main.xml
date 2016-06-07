@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="us.ofoke.luvurl.MainActivity"
-    android:layout_height="match_parent"
-     android:layout_width="match_parent"
-    android:id="@+id/coordinatorLayout">
-
-<LinearLayout
-
-    android:id="@+id/activity_main"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    tools:context="us.ofoke.luvurl.MainActivity">
 
-    >
+    <LinearLayout
 
-<!--   <Button
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:onClick="oh"
-       android:text="oh dude"/>-->
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        >
+
+        <!--   <Button
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:onClick="oh"
+               android:text="oh dude"/>-->
 
 
-   <WebView
-       android:id="@+id/webview"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:nestedScrollingEnabled="true"
-       />
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="true" />
 
-</LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/bottom_sheet"
@@ -53,19 +51,31 @@
             android:fontFamily="sans-serif-medium"
             android:text="@string/sheet_title_text"
             android:textColor="@color/dark_text"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
-<!--        <TextView
-            android:id="@+id/sheetSubtitle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/sheetTitle"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:lines="2"
-            android:text="@string/sheet_subtitle_text"
-            android:textColor="@color/dark_text_secondary_icons"
-            android:textSize="16sp"/>-->
+            android:orientation="horizontal">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_share_black_24dp"
+                android:backgroundTint="@color/transparent"/>
+
+        </LinearLayout>
+
+        <!--        <TextView
+                    android:id="@+id/sheetSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/sheetTitle"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:lines="2"
+                    android:text="@string/sheet_subtitle_text"
+                    android:textColor="@color/dark_text_secondary_icons"
+                    android:textSize="16sp"/>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,61 +84,72 @@
             android:orientation="horizontal">
 
 
-   <RadioGroup
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:orientation="horizontal"
-       android:id="@+id/time"
-       android:layout_gravity="center_horizontal"
-       android:gravity="center_horizontal">
-       <RadioButton android:id="@+id/radio_time_hour"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="hour "
-           android:onClick="onTimeRadioButtonClicked" />
-       <RadioButton android:id="@+id/radio_time_day"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="day "
-           android:onClick="onTimeRadioButtonClicked" />
-       <RadioButton android:id="@+id/radio_time_week"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="week "
-           android:onClick="onTimeRadioButtonClicked" />
-       <RadioButton android:id="@+id/radio_time_4ever"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="4ever "
-           android:onClick="onTimeRadioButtonClicked" />
-   </RadioGroup>
+            <RadioGroup
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_time_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onTimeRadioButtonClicked"
+                    android:text="hour " />
+
+                <RadioButton
+                    android:id="@+id/radio_time_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onTimeRadioButtonClicked"
+                    android:text="day " />
+
+                <RadioButton
+                    android:id="@+id/radio_time_week"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onTimeRadioButtonClicked"
+                    android:text="week " />
+
+                <RadioButton
+                    android:id="@+id/radio_time_4ever"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onTimeRadioButtonClicked"
+                    android:text="4ever " />
+            </RadioGroup>
 
 
-   <RadioGroup
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:orientation="horizontal"
-       android:id="@+id/luv"
-       android:layout_gravity="center_horizontal"
-       android:gravity="center_horizontal">
-       <RadioButton android:id="@+id/radio_luv_yes"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="love"
-           android:onClick="onLuvRadioButtonClicked" />
-       <RadioButton android:id="@+id/radio_luv_no"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="no love"
-           android:onClick="onLuvRadioButtonClicked" />
-   </RadioGroup>
+            <RadioGroup
+                android:id="@+id/luv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rview"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    tools:listitem="@layout/link"
-                    />
+                <RadioButton
+                    android:id="@+id/radio_luv_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onLuvRadioButtonClicked"
+                    android:text="love" />
+
+                <RadioButton
+                    android:id="@+id/radio_luv_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onLuvRadioButtonClicked"
+                    android:text="no love" />
+            </RadioGroup>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rview"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                tools:listitem="@layout/link" />
 
 
             <!--            <ImageView
@@ -146,14 +167,14 @@
 
     </LinearLayout>
 
-<!--    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:src="@android:drawable/ic_dialog_email"
-        app:layout_anchor="@id/bottom_sheet"
-        app:layout_anchorGravity="bottom|end"
-        />-->
+    <!--    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:src="@android:drawable/ic_dialog_email"
+            app:layout_anchor="@id/bottom_sheet"
+            app:layout_anchorGravity="bottom|end"
+            />-->
 
 </android.support.design.widget.CoordinatorLayout>
