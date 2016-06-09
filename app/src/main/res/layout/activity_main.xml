@@ -8,6 +8,8 @@
     android:layout_height="match_parent"
     tools:context="us.ofoke.luvurl.MainActivity">
 
+
+
     <LinearLayout
 
         android:id="@+id/activity_main"
@@ -17,6 +19,11 @@
 
         >
 
+        <android.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="4dp" />
         <!--   <Button
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
@@ -44,19 +51,49 @@
         app:behavior_peekHeight="80dp"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-        <TextView
+<!--        <TextView
             android:id="@+id/sheetTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:text="@string/sheet_title_text"
             android:textColor="@color/dark_text"
-            android:textSize="18sp" />
+            android:textSize="18sp" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                android:backgroundTint="@color/transparent"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_refresh_black_24dp"
+                android:backgroundTint="@color/transparent"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_share_black_24dp"
+                android:backgroundTint="@color/transparent"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_share_black_24dp"
+                android:backgroundTint="@color/transparent"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_share_black_24dp"
+                android:backgroundTint="@color/transparent"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_share_black_24dp"
+                android:backgroundTint="@color/transparent"/>
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

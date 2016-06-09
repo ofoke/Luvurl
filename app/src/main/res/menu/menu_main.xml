@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="schemas.android.com/tools"
+    tools:context="us.ofoke.luvurl.MainActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/new_search"
+    <item android:id="@+id/go_back"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_arrow_back_black_24dp"
+        android:title="go"
+         />
+    <item android:id="@+id/refresh"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_refresh_black_24dp"
+        android:title="refresh"
+        />
+</menu>
+
+    <!--    <item android:id="@+id/new_search"
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/new_search"
-        app:showAsAction="always"/>
-</menu>
+        app:showAsAction="always"/>-->

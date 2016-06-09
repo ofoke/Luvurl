@@ -1,5 +1,6 @@
 package us.ofoke.luvurl;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -11,7 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import android.support.v7.widget.Toolbar;
+//import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +23,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
@@ -46,6 +48,14 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar mToolbar = (android.widget.Toolbar) findViewById(R.id.toolbar);
+        setActionBar(mToolbar);
+
+
+//        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(mToolbar);
+
 
         myWebView = (WebView) findViewById(R.id.webview);
 
@@ -122,6 +132,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+
+
     }
 
     @Override
@@ -133,10 +145,18 @@ public class MainActivity extends Activity {
         }
     }
 
+/*    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }*/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
         return true;
     }
 
@@ -144,7 +164,7 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.new_search:
+            case R.id.go_back:
               // openCustomTab();
                 return true;
             default:
