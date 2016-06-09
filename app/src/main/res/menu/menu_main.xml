@@ -3,15 +3,21 @@
     xmlns:tools="schemas.android.com/tools"
     tools:context="us.ofoke.luvurl.MainActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/go_back"
+
+    <item android:id="@+id/search"
         android:showAsAction="always"
-        android:icon="@drawable/ic_arrow_back_black_24dp"
-        android:title="go"
-         />
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="search"
+        />
     <item android:id="@+id/refresh"
         android:showAsAction="always"
         android:icon="@drawable/ic_refresh_black_24dp"
         android:title="refresh"
+        />
+    <item android:id="@+id/go_back"
+        android:showAsAction="always"
+        android:icon="@drawable/ic_arrow_back_black_24dp"
+        android:title="go"
         />
 </menu>
 
