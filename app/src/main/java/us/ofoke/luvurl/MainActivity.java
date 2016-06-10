@@ -21,6 +21,8 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toolbar;
@@ -44,6 +46,13 @@ public class MainActivity extends Activity {
     private BottomSheetDialog dialog;
     private CoordinatorLayout coordinatorLayout;
 
+    private ImageButton luvRaterBtn;
+    private ImageButton noLuvRaterBtn;
+
+    private int luvrater = 1;
+    private int noluvrater = 2;
+    private int raterkey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,10 +61,8 @@ public class MainActivity extends Activity {
         Toolbar mToolbar = (android.widget.Toolbar) findViewById(R.id.toolbar);
         setActionBar(mToolbar);
 
-
-//        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(mToolbar);
-
+        luvRaterBtn = (ImageButton) findViewById(R.id.bsheet_luv);
+        noLuvRaterBtn = (ImageButton) findViewById(R.id.bsheet_noluv);
 
         myWebView = (WebView) findViewById(R.id.webview);
 
@@ -117,6 +124,19 @@ public class MainActivity extends Activity {
         });
     }
 
+
+    public void rater_luv(View view){
+        raterkey = luvrater;
+        rater(raterkey);
+    }
+
+
+    public void rater(int raterkey){
+        String url = myWebView.getUrl();
+        int rating = raterkey;
+        long ts = System.currentTimeMillis();
+
+    }
 
     public void oh(View view){
         String bob = myWebView.getUrl();
