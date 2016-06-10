@@ -3,18 +3,20 @@ package us.ofoke.luvurl;
 /**
  * Created by Art on 5/31/2016.
  */
-public class Link {
+public class Lurl {
     //String guid;  // String uniqueID = UUID.randomUUID().toString();
-    int rating;
+    int noluvrating;
+    int luvrating;
     long timestamp;
     String url;
 
-    public Link(){
+    public Lurl(){
     }
 
-    public Link(int rating, long timestamp, String url){
+    public Lurl(int rating, long timestamp, String url){
        // this.guid = guid;
-        this.rating = rating;
+        this.noluvrating = noluvrating;
+        this.luvrating = luvrating;
         this.timestamp = timestamp;
         this.url = url;
     }
@@ -22,9 +24,12 @@ public class Link {
 /*    public String getGuid(){
         return guid;
     }*/
+    public int getNoLuvRating(){
+    return noluvrating;
+}
 
-    public int getRating(){
-        return rating;
+    public int getLuvRating(){
+        return luvrating;
     }
 
     public long getTimestamp(){

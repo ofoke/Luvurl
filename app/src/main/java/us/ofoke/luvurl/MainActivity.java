@@ -1,13 +1,10 @@
 package us.ofoke.luvurl;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,24 +18,26 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 //public class MainActivity extends AppCompatActivity {
 public class MainActivity extends Activity {
 
-    public static final String TAG = "Link";
+    public static final String TAG = "Lurl";
     private DatabaseReference mRef;
     private RecyclerView mLinks;
     private LinearLayoutManager mManager;
-    private FirebaseRecyclerAdapter<Link, LinkHolder> mRecyclerViewAdapter;
+    private FirebaseRecyclerAdapter<Lurl, LinkHolder> mRecyclerViewAdapter;
 
     private WebView myWebView;
 
@@ -52,6 +51,7 @@ public class MainActivity extends Activity {
     private int luvrater = 1;
     private int noluvrater = 2;
     private int raterkey;
+    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +83,9 @@ public class MainActivity extends Activity {
         mLinks.setLayoutManager(mManager);
 
        // THIS IS TEMP
-//        mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Link, LinkHolder>(Link.class, R.layout.link, LinkHolder.class, mRef) {
+//        mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Lurl, LinkHolder>(Lurl.class, R.layout.link, LinkHolder.class, mRef) {
 //            @Override
-//            protected void populateViewHolder(LinkHolder viewHolder, Link model, final int position) {
+//            protected void populateViewHolder(LinkHolder viewHolder, Lurl model, final int position) {
 //                viewHolder.setUrl(model.getUrl());
 //
 //                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
@@ -132,9 +132,47 @@ public class MainActivity extends Activity {
 
 
     public void rater(int raterkey){
-        String url = myWebView.getUrl();
-        int rating = raterkey;
-        long ts = System.currentTimeMillis();
+
+        String rawUrl = myWebView.getUrl();
+        if (null != rawUrl && rawUrl.length() > 0 )
+        {
+            if (rawUrl.contains("?")) {
+                //url cleanup - remove everything after ?
+                StringBuilder str = new StringBuilder(rawUrl);
+                int qMarkStart = str.indexOf("?");
+                int qMarkEnd = str.length();
+                url = str.delete(qMarkStart, qMarkEnd).toString();
+        } else{
+                url = rawUrl;
+            }
+
+            //query for existence of url
+           Query qRef = mRef.child("url").equalTo(url);
+            qRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Lurl mLurl = (Lurl) dataSnapshot.getValue();
+                    String bob = mLurl.getUrl();
+                    Log.v("bob", bob);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+
+
+
+            int rating = raterkey;
+            long ts = System.currentTimeMillis();
+        }
+
+
+
+
 
     }
 
