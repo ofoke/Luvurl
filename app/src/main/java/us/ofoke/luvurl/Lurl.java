@@ -4,15 +4,15 @@ package us.ofoke.luvurl;
  * Created by Art on 5/31/2016.
  */
 public class Lurl {
-    public Double luvrating;
-    public Double noluvrating;
-    public Long timestamp;
+    public int luvrating;
+    public int noluvrating;
+    public long timestamp;
     public String url;
 
     public Lurl(){
     }
 
-    public Lurl(Double luvrating, Double noluvrating, Long timestamp, String url){
+    public Lurl(int luvrating, int noluvrating, long timestamp, String url){
         this.luvrating = luvrating;
         this.noluvrating = noluvrating;
         this.timestamp = timestamp;
@@ -43,9 +43,9 @@ public class Lurl {
         this.timestamp = timestamp;
     }*/
 
-/*    public String getUrl(){
+    public String getUrl(){
         return url;
-    }*/
+    }
 
 /*    public void setUrl(String url) {
         this.url = url;

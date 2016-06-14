@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,9 +49,8 @@ public class MainActivity extends Activity {
     private ImageButton luvRaterBtn;
     private ImageButton noLuvRaterBtn;
 
-    private Double luvrater = Double.valueOf(1);
-    private Double noluvrater = Double.valueOf(2);
-    private Double raterkey;
+    private int luvrater;
+    private int noluvrater;
     String url;
 
     @Override
@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
 
         mLinks.setLayoutManager(mManager);
 
-       // THIS IS TEMP
+        // THIS IS TEMP
 //        mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Lurl, LinkHolder>(Lurl.class, R.layout.link, LinkHolder.class, mRef) {
 //            @Override
 //            protected void populateViewHolder(LinkHolder viewHolder, Lurl model, final int position) {
@@ -124,72 +124,81 @@ public class MainActivity extends Activity {
     }
 
 
-    public void rater_luv(View view){
-        raterkey = luvrater;
-        rater(raterkey);
+    public void rater_luv(View view) {
+        luvrater = 1;
+        noluvrater = 0;
+        rater(luvrater, noluvrater);
     }
 
+    public void rater_noluv(View view) {
+        luvrater = 0;
+        noluvrater = 1;
+        rater(luvrater, noluvrater);
+    }
 
-    public void rater(Double raterkey){
+    public void rater(int luvrater, int noluvrater) {
 
         String rawUrl = myWebView.getUrl();
 
-        if (null != rawUrl && rawUrl.length() > 0 )
-        {
+        if (null != rawUrl && rawUrl.length() > 0) {
             if (rawUrl.contains("?")) {
                 //url cleanup - remove everything after ?
                 StringBuilder str = new StringBuilder(rawUrl);
                 int qMarkStart = str.indexOf("?");
                 int qMarkEnd = str.length();
                 url = str.delete(qMarkStart, qMarkEnd).toString();
-        } else{
+            } else {
                 url = rawUrl;
             }
 
             //query for existence of url
-//           Query qRef = mRef.equalTo(url, "url");
-//           // qRef.addValueEventListener()
-//            qRef.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    Lurl mLurl = (Lurl) dataSnapshot.getValue();
-//                    String bob = mLurl.getUrl();
-//                    Log.v("bob", bob);
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
+            mRef.child("lurls").orderByChild("url").equalTo(url).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Lurl lurl = dataSnapshot.getValue(Lurl.class);
+                    String bob = lurl.getUrl();
+                    Log.v("bob", bob);
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
 
 
+            //if url exists - increment appropriate count, else - add new url
 
-            Double rating = raterkey;
-            Long ts = System.currentTimeMillis();
+            long ts = System.currentTimeMillis();
+
+            Lurl lurl = new Lurl(luvrater, noluvrater, ts, url);
+
+           // mRef.child("lurls").push().setValue(lurl);
 
 
-            Lurl lurl = new Lurl(Double.valueOf(2), Double.valueOf(2), ts, url);
-           // Lurl lurl = new Lurl();
-            String key = mRef.child("lurls").push().getKey();
-            mRef.child("lurls").child(key).setValue(lurl);
-
-//            mRef.setValue(lurl, new DatabaseReference.CompletionListener() {
-//
-//                @Override
-//                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-//                    if (databaseError != null) {
-//                        Log.e(TAG, "Failed to write message", databaseError.toException());
-//                    }
-//                }
-//            });
+//            String key = mRef.child("lurls").push().getKey();
+//            mRef.child("lurls").child(key).setValue(lurl);
         }
-
 
 
     }
 
-    public void oh(View view){
+    public void oh(View view) {
         String bob = myWebView.getUrl();
         Log.v("bob", bob);
 
@@ -237,7 +246,7 @@ public class MainActivity extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.go_back:
-              // openCustomTab();
+                // openCustomTab();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
