@@ -4,39 +4,50 @@ package us.ofoke.luvurl;
  * Created by Art on 5/31/2016.
  */
 public class Lurl {
-    //String guid;  // String uniqueID = UUID.randomUUID().toString();
-    int noluvrating;
-    int luvrating;
-    long timestamp;
-    String url;
+    public Double luvrating;
+    public Double noluvrating;
+    public Long timestamp;
+    public String url;
 
     public Lurl(){
     }
 
-    public Lurl(int rating, long timestamp, String url){
-       // this.guid = guid;
-        this.noluvrating = noluvrating;
+    public Lurl(Double luvrating, Double noluvrating, Long timestamp, String url){
         this.luvrating = luvrating;
+        this.noluvrating = noluvrating;
         this.timestamp = timestamp;
         this.url = url;
     }
 
-/*    public String getGuid(){
-        return guid;
+//    public Double getLuvRating(){
+//        return luvrating;
+//    }
+
+/*    public void setLuvrating(Double luvrating) {
+        this.luvrating = luvrating;
     }*/
-    public int getNoLuvRating(){
-    return noluvrating;
-}
 
-    public int getLuvRating(){
-        return luvrating;
-    }
+/*    public Double getNoLuvRating(){
+        return noluvrating;
+    }*/
 
-    public long getTimestamp(){
+/*    public void setNoluvrating(Double noluvrating) {
+        this.noluvrating = noluvrating;
+    }*/
+
+/*    public Long getTimestamp(){
         return timestamp;
-    }
+    }*/
 
-    public String getUrl(){
+/*    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }*/
+
+/*    public String getUrl(){
         return url;
-    }
+    }*/
+
+/*    public void setUrl(String url) {
+        this.url = url;
+    }*/
 }

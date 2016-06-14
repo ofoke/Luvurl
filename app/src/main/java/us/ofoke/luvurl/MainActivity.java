@@ -48,9 +48,9 @@ public class MainActivity extends Activity {
     private ImageButton luvRaterBtn;
     private ImageButton noLuvRaterBtn;
 
-    private int luvrater = 1;
-    private int noluvrater = 2;
-    private int raterkey;
+    private Double luvrater = Double.valueOf(1);
+    private Double noluvrater = Double.valueOf(2);
+    private Double raterkey;
     String url;
 
     @Override
@@ -103,7 +103,6 @@ public class MainActivity extends Activity {
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
-
         initBottomSheet();
     }
 
@@ -131,9 +130,10 @@ public class MainActivity extends Activity {
     }
 
 
-    public void rater(int raterkey){
+    public void rater(Double raterkey){
 
         String rawUrl = myWebView.getUrl();
+
         if (null != rawUrl && rawUrl.length() > 0 )
         {
             if (rawUrl.contains("?")) {
@@ -147,30 +147,43 @@ public class MainActivity extends Activity {
             }
 
             //query for existence of url
-           Query qRef = mRef.child("url").equalTo(url);
-            qRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Lurl mLurl = (Lurl) dataSnapshot.getValue();
-                    String bob = mLurl.getUrl();
-                    Log.v("bob", bob);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-
+//           Query qRef = mRef.equalTo(url, "url");
+//           // qRef.addValueEventListener()
+//            qRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    Lurl mLurl = (Lurl) dataSnapshot.getValue();
+//                    String bob = mLurl.getUrl();
+//                    Log.v("bob", bob);
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
 
 
-            int rating = raterkey;
-            long ts = System.currentTimeMillis();
+
+            Double rating = raterkey;
+            Long ts = System.currentTimeMillis();
+
+
+            Lurl lurl = new Lurl(Double.valueOf(2), Double.valueOf(2), ts, url);
+           // Lurl lurl = new Lurl();
+            String key = mRef.child("lurls").push().getKey();
+            mRef.child("lurls").child(key).setValue(lurl);
+
+//            mRef.setValue(lurl, new DatabaseReference.CompletionListener() {
+//
+//                @Override
+//                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//                    if (databaseError != null) {
+//                        Log.e(TAG, "Failed to write message", databaseError.toException());
+//                    }
+//                }
+//            });
         }
-
-
 
 
 
@@ -182,6 +195,7 @@ public class MainActivity extends Activity {
 
         behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
+
 
     public WebView getMyWebView() {
         return myWebView;
