@@ -4,8 +4,8 @@ package us.ofoke.luvurl;
  * Created by Art on 5/31/2016.
  */
 public class Lurl {
-    public int luvrating;
-    public int noluvrating;
+    private int luvrating;
+    private int noluvrating;
     public long timestamp;
     public String url;
 
@@ -19,29 +19,29 @@ public class Lurl {
         this.url = url;
     }
 
-//    public Double getLuvRating(){
-//        return luvrating;
-//    }
+    public int getLuvRating(){
+        return luvrating;
+    }
 
-/*    public void setLuvrating(Double luvrating) {
+/*    public void setLuvrating(int luvrating) {
         this.luvrating = luvrating;
     }*/
 
-/*    public Double getNoLuvRating(){
+    public int getNoLuvRating(){
         return noluvrating;
-    }*/
+    }
 
 /*    public void setNoluvrating(Double noluvrating) {
         this.noluvrating = noluvrating;
     }*/
 
-/*    public Long getTimestamp(){
+    public long getTimestamp(){
         return timestamp;
-    }*/
+    }
 
-/*    public void setTimestamp(Long timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
-    }*/
+    }
 
     public String getUrl(){
         return url;

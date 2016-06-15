@@ -53,6 +53,7 @@ public class MainActivity extends Activity {
     private int noluvrater;
     String url;
 
+    Lurl lurl = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,6 +138,7 @@ public class MainActivity extends Activity {
     }
 
     public void rater(int luvrater, int noluvrater) {
+        lurl = null;
 
         String rawUrl = myWebView.getUrl();
 
@@ -151,13 +153,23 @@ public class MainActivity extends Activity {
                 url = rawUrl;
             }
 
-            //query for existence of url
-            mRef.child("lurls").orderByChild("url").equalTo(url).addChildEventListener(new ChildEventListener() {
+            //add them all
+            long ts = System.currentTimeMillis();
+            lurl = new Lurl(luvrater, noluvrater, ts, url);
+            mRef.child("lurls").push().setValue(lurl);
+
+            //find the max rating
+            mRef.child("lurls").limitToLast(1).orderByChild("luvrating").addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Lurl lurl = dataSnapshot.getValue(Lurl.class);
-                    String bob = lurl.getUrl();
-                    Log.v("bob", bob);
+                    lurl = dataSnapshot.getValue(Lurl.class);
+                    int newluvrating = lurl.getLuvRating() + 1;
+                    int oldnoluvrating = lurl.getNoLuvRating();
+                    if(newluvrating > 2){
+                        long ts = System.currentTimeMillis();
+                        lurl = new Lurl(newluvrating, oldnoluvrating, ts, url);
+                        mRef.child("lurls").push().setValue(lurl);
+                    }
                 }
 
                 @Override
@@ -182,13 +194,54 @@ public class MainActivity extends Activity {
             });
 
 
+
+            //query for existence of url
+//            mRef.child("lurls").orderByChild("url").equalTo(url).addChildEventListener(new ChildEventListener() {
+//                @Override
+//                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                    lurl = dataSnapshot.getValue(Lurl.class);
+//                    String bob = lurl.getUrl();
+//                    Log.v("bob", bob);
+//                }
+//
+//                @Override
+//                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//                }
+//
+//                @Override
+//                public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//                }
+//
+//                @Override
+//                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                Log.v("larry", "larry");
+//                }
+//            });
+
             //if url exists - increment appropriate count, else - add new url
 
-            long ts = System.currentTimeMillis();
+//            if(lurl != null){
+//                long ts = System.currentTimeMillis();
+//                lurl.setTimestamp(ts);
+//
+//              //  int incrementedLuvRating = lurl.getLuvRating() + 1;
+//               // lurl.setLuvrating(incrementedLuvRating);
+//
+//                String bob = lurl.getUrl();
+//                mRef.child("lurls").child(bob).setValue(lurl);
+//            } else {
+//                long ts = System.currentTimeMillis();
+//                lurl = new Lurl(luvrater, noluvrater, ts, url);
+//                mRef.child("lurls").push().setValue(lurl);
+//            }
 
-            Lurl lurl = new Lurl(luvrater, noluvrater, ts, url);
-
-           // mRef.child("lurls").push().setValue(lurl);
 
 
 //            String key = mRef.child("lurls").push().getKey();
