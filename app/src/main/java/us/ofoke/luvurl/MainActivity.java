@@ -28,14 +28,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 //public class MainActivity extends AppCompatActivity {
 public class MainActivity extends Activity {
 
     public static final String TAG = "Lurl";
     private DatabaseReference mRef;
+     private DatabaseReference lRef;
     private RecyclerView mLinks;
     private LinearLayoutManager mManager;
     private FirebaseRecyclerAdapter<Lurl, LinkHolder> mRecyclerViewAdapter;
@@ -77,6 +83,7 @@ public class MainActivity extends Activity {
         myWebView.loadUrl("https://www.google.com");
 
         mRef = FirebaseDatabase.getInstance().getReference();
+        lRef = FirebaseDatabase.getInstance().getReference().child("lurls");
 
         mLinks = (RecyclerView) findViewById(R.id.rview);
         mLinks.setHasFixedSize(true);
@@ -163,16 +170,40 @@ public class MainActivity extends Activity {
             veListen = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    boolean prevRated =  dataSnapshot.exists();
+                    boolean prevRated = dataSnapshot.exists();
 
-                    if(prevRated){
-                        String lurlKey = dataSnapshot.child("lurls").getKey();
-                      //  lurl = new Lurl();
-                        lurl = dataSnapshot.getValue(Lurl.class);
-                        int ratingIncrement = lurl.getLuvRating() + 1;
+                    if (prevRated) {
 
-                        Log.v("urk", "urk " + lurlKey + "ll " + ratingIncrement);
-                    } else{
+                        Map<String, Object> urly = (Map<String, Object>) dataSnapshot.getValue();
+
+                        String thing = (String) urly.keySet().toArray()[0];
+                        Log.v("urly", thing);
+
+                     // String key = dataSnapshot.getChildren("lurls").getKey();
+                     //  Map thing = dataSnapshot.getValue().
+                     //  Log.v("map", thing.toString());
+                        // String fart = lurl.getUrl();
+
+                       // lurl = dataSnapshot.getKey().
+
+                       // Log.v("key", key);
+                        Log.v("ds", dataSnapshot.toString());
+//                        mRef.runTransaction(new Transaction.Handler() {
+//                            @Override
+//                            public Transaction.Result doTransaction(MutableData mutableData) {
+//
+//
+//                                return null;
+//                            }
+//
+//                            @Override
+//                            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+//
+//                            }
+//                        });
+
+
+                    } else {
                         mRef.child("lurls").push().setValue(lurl);
                     }
 
@@ -185,8 +216,8 @@ public class MainActivity extends Activity {
                 }
             };
 
-            mRef.child("lurls").orderByChild("url").equalTo(url).addValueEventListener(veListen);
-
+           mRef.child("lurls").orderByChild("url").equalTo(url).addValueEventListener(veListen);
+            // lRef.orderByChild("url").equalTo(url).addValueEventListener(veListen);
 
 
 //            String key = mRef.child("lurls").push().getKey();
