@@ -33,6 +33,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONObject;
+
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -147,7 +151,7 @@ public class MainActivity extends Activity {
         rater(luvrater, noluvrater);
     }
 
-    public void rater(int luvrater, int noluvrater) {
+    public void rater(final int luvrater, int noluvrater) {
         lurl = null;
 
         String rawUrl = myWebView.getUrl();
@@ -176,8 +180,20 @@ public class MainActivity extends Activity {
 
                         Map<String, Object> urly = (Map<String, Object>) dataSnapshot.getValue();
 
-                        String thing = (String) urly.keySet().toArray()[0];
-                        Log.v("urly", thing);
+                        String key = (String) urly.keySet().toArray()[0];
+                        Log.v("urly", key);
+
+                         HashMap<String, Long> j = (HashMap<String, Long>) urly.values().toArray()[0];
+                       // JSONObject j = dataSnapshot.getValue(true).;
+                        //String j = dataSnapshot.child("lurls/luvrating/").getValue();
+
+                        Long thing = j.get("luvRating");
+                         Log.v("j", j.toString());
+                        Log.v("thing", String.valueOf(thing));
+                      //  lurl = dataSnapshot.getValue(Lurl.class);
+                      //  Log.v("lurl", lurl.toString());
+                       // int luvratery = lurl.getLuvRating() + 1;
+                       // Log.v("lr", String.valueOf(luvratery));
 
                      // String key = dataSnapshot.getChildren("lurls").getKey();
                      //  Map thing = dataSnapshot.getValue().
@@ -187,7 +203,7 @@ public class MainActivity extends Activity {
                        // lurl = dataSnapshot.getKey().
 
                        // Log.v("key", key);
-                        Log.v("ds", dataSnapshot.toString());
+                        //Log.v("ds", dataSnapshot.toString());
 //                        mRef.runTransaction(new Transaction.Handler() {
 //                            @Override
 //                            public Transaction.Result doTransaction(MutableData mutableData) {
