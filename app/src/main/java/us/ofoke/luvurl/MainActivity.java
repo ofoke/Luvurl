@@ -45,7 +45,8 @@ public class MainActivity extends Activity {
 
     public static final String TAG = "Lurl";
     private DatabaseReference mRef;
-     private DatabaseReference lRef;
+    private DatabaseReference lRef;
+    private DatabaseReference nRef;
     private RecyclerView mLinks;
     private LinearLayoutManager mManager;
     private FirebaseRecyclerAdapter<Lurl, LinkHolder> mRecyclerViewAdapter;
@@ -61,6 +62,14 @@ public class MainActivity extends Activity {
 
     private int luvrater;
     private int noluvrater;
+    private Long luvRatingCum;
+    private Long noLuvRatingCum;
+    private Map<String, Long> ratingsCum;
+    private String key;
+
+    private MutableData luvRatingCumMd;
+    private MutableData noLuvRatingCumMd;
+
     private String url;
     private ChildEventListener ceListen;
     private ValueEventListener veListen;
@@ -87,7 +96,6 @@ public class MainActivity extends Activity {
         myWebView.loadUrl("https://www.google.com");
 
         mRef = FirebaseDatabase.getInstance().getReference();
-        lRef = FirebaseDatabase.getInstance().getReference().child("lurls");
 
         mLinks = (RecyclerView) findViewById(R.id.rview);
         mLinks.setHasFixedSize(true);
@@ -177,53 +185,28 @@ public class MainActivity extends Activity {
                     boolean prevRated = dataSnapshot.exists();
 
                     if (prevRated) {
+                        //get key cuz getKey() doesn't work here
+                        Map<String, Object> rawkey = (Map<String, Object>) dataSnapshot.getValue();
 
-                        Map<String, Object> urly = (Map<String, Object>) dataSnapshot.getValue();
+                        key = (String) rawkey.keySet().toArray()[0];
+                        Log.v("thekey", key);
 
-                        String key = (String) urly.keySet().toArray()[0];
-                        Log.v("urly", key);
+                        //get luvrating and noluvrating
+                        ratingsCum = (Map<String, Long>) rawkey.values().toArray()[0];
 
-                         HashMap<String, Long> j = (HashMap<String, Long>) urly.values().toArray()[0];
-                       // JSONObject j = dataSnapshot.getValue(true).;
-                        //String j = dataSnapshot.child("lurls/luvrating/").getValue();
-
-                        Long thing = j.get("luvRating");
-                         Log.v("j", j.toString());
-                        Log.v("thing", String.valueOf(thing));
-                      //  lurl = dataSnapshot.getValue(Lurl.class);
-                      //  Log.v("lurl", lurl.toString());
-                       // int luvratery = lurl.getLuvRating() + 1;
-                       // Log.v("lr", String.valueOf(luvratery));
-
-                     // String key = dataSnapshot.getChildren("lurls").getKey();
-                     //  Map thing = dataSnapshot.getValue().
-                     //  Log.v("map", thing.toString());
-                        // String fart = lurl.getUrl();
-
-                       // lurl = dataSnapshot.getKey().
-
-                       // Log.v("key", key);
-                        //Log.v("ds", dataSnapshot.toString());
-//                        mRef.runTransaction(new Transaction.Handler() {
-//                            @Override
-//                            public Transaction.Result doTransaction(MutableData mutableData) {
-//
-//
-//                                return null;
-//                            }
-//
-//                            @Override
-//                            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-//
-//                            }
-//                        });
-
+                        if (luvrater == 1) {
+                            luvRatingCum = ratingsCum.get("luvRating");
+                            lRef = mRef.child("lurls").child(key).child("luvRating");
+                            transIncrement(lRef, luvRatingCum);
+                        } else {
+                            noLuvRatingCum = ratingsCum.get("noLuvRating");
+                            nRef = mRef.child("lurls").child(key).child("noLuvRating");
+                            transIncrement(nRef, noLuvRatingCum);
+                        }
 
                     } else {
                         mRef.child("lurls").push().setValue(lurl);
                     }
-
-                    mRef.child("lurls").removeEventListener(veListen);
                 }
 
                 @Override
@@ -232,15 +215,36 @@ public class MainActivity extends Activity {
                 }
             };
 
-           mRef.child("lurls").orderByChild("url").equalTo(url).addValueEventListener(veListen);
-            // lRef.orderByChild("url").equalTo(url).addValueEventListener(veListen);
-
+            mRef.child("lurls").orderByChild("url").equalTo(url).addListenerForSingleValueEvent(veListen);
 
 //            String key = mRef.child("lurls").push().getKey();
 //            mRef.child("lurls").child(key).setValue(lurl);
         }
 
+    }
 
+
+    public void transIncrement(DatabaseReference oRef, Long mData) {
+        //write it via transaction
+        oRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mData) {
+
+                if (mData.getValue() != null) {
+                    Long theValue = (Long) mData.getValue();
+                    theValue++;
+                    mData.setValue(theValue);
+                }
+
+                return Transaction.success(mData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                //Log.v("md", dataSnapshot.toString());
+                //Log.v("mderror", databaseError.toString());
+            }
+        });
     }
 
     public void oh(View view) {
