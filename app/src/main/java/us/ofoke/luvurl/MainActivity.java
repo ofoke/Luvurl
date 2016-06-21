@@ -187,9 +187,8 @@ public class MainActivity extends Activity {
                     if (prevRated) {
                         //get key cuz getKey() doesn't work here
                         Map<String, Object> rawkey = (Map<String, Object>) dataSnapshot.getValue();
-
                         key = (String) rawkey.keySet().toArray()[0];
-                        Log.v("thekey", key);
+                       // Log.v("thekey", key);
 
                         //get luvrating and noluvrating
                         ratingsCum = (Map<String, Long>) rawkey.values().toArray()[0];
@@ -235,7 +234,6 @@ public class MainActivity extends Activity {
                     theValue++;
                     mData.setValue(theValue);
                 }
-
                 return Transaction.success(mData);
             }
 

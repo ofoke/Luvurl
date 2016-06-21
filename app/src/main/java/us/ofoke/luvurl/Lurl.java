@@ -59,14 +59,14 @@ public class Lurl {
     }*/
 
 
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("luvrating", luvrating);
-        result.put("noluvrating", noluvrating);
-        result.put("timestamp", timestamp);
-        result.put("url", url);
-
-        return result;
-    }
+//    @Exclude
+//    public Map<String, Object> toMap() {
+//        HashMap<String, Object> result = new HashMap<>();
+//        result.put("luvrating", luvrating);
+//        result.put("noluvrating", noluvrating);
+//        result.put("timestamp", timestamp);
+//        result.put("url", url);
+//
+//        return result;
+//    }
 }

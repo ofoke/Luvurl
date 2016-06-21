@@ -14,21 +14,13 @@
         android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-
-        >
+        android:orientation="vertical">
 
         <android.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="4dp" />
-        <!--   <Button
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:onClick="oh"
-               android:text="oh dude"/>-->
-
 
         <WebView
             android:id="@+id/webview"
@@ -79,9 +71,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/transparent"
+                android:onClick="rater_luv"
                 android:paddingLeft="35dp"
-                android:src="@drawable/ic_mood_black_24dp"
-                android:onClick="rater_luv"/>
+                android:src="@drawable/ic_mood_black_24dp" />
 
             <TextView
                 android:id="@+id/textView_luv"
@@ -95,9 +87,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/transparent"
+                android:onClick="rater_noluv"
                 android:paddingLeft="35dp"
-                android:src="@drawable/ic_mood_bad_black_24dp"
-                android:onClick="rater_noluv"/>
+                android:src="@drawable/ic_mood_bad_black_24dp" />
 
             <TextView
                 android:id="@+id/textView_noluv"
