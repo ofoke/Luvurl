@@ -76,10 +76,10 @@
                 android:src="@drawable/ic_mood_black_24dp" />
 
             <TextView
-                android:id="@+id/textView_luv"
+                android:id="@+id/textview_luv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="500"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <ImageButton
@@ -92,10 +92,10 @@
                 android:src="@drawable/ic_mood_bad_black_24dp" />
 
             <TextView
-                android:id="@+id/textView_noluv"
+                android:id="@+id/textview_noluv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="200"
+                android:text=""
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <ImageButton

@@ -59,6 +59,8 @@ public class MainActivity extends Activity {
 
     private ImageButton luvRaterBtn;
     private ImageButton noLuvRaterBtn;
+    private TextView luvRateTV;
+    private TextView noLuvRateTV;
 
     private int luvrater;
     private int noluvrater;
@@ -73,6 +75,7 @@ public class MainActivity extends Activity {
     private String url;
     private ChildEventListener ceListen;
     private ValueEventListener veListen;
+    private ValueEventListener uiListen;
 
     private Lurl lurl = null;
 
@@ -87,15 +90,25 @@ public class MainActivity extends Activity {
         luvRaterBtn = (ImageButton) findViewById(R.id.bsheet_luv);
         noLuvRaterBtn = (ImageButton) findViewById(R.id.bsheet_noluv);
 
+        luvRateTV = (TextView) findViewById(R.id.textview_luv);
+        noLuvRateTV = (TextView) findViewById(R.id.textview_noluv);
+
+        mRef = FirebaseDatabase.getInstance().getReference();
+
         myWebView = (WebView) findViewById(R.id.webview);
 
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        myWebView.setWebViewClient(new WebViewClient());
+        myWebView.setWebViewClient(new WebViewClient() {
+            public void onPageFinished(WebView view, String url) {
+                urlInFB(url);
+            }
+        });
+
         myWebView.loadUrl("https://www.google.com");
 
-        mRef = FirebaseDatabase.getInstance().getReference();
+
 
         mLinks = (RecyclerView) findViewById(R.id.rview);
         mLinks.setHasFixedSize(true);
@@ -146,6 +159,74 @@ public class MainActivity extends Activity {
         });
     }
 
+    public void urlInFB(String rawUrl){
+
+        if (null != rawUrl && rawUrl.length() > 0) {
+            if (rawUrl.contains("?")) {
+                //url cleanup - remove everything after ?
+                StringBuilder str = new StringBuilder(rawUrl);
+                int qMarkStart = str.indexOf("?");
+                int qMarkEnd = str.length();
+                url = str.delete(qMarkStart, qMarkEnd).toString();
+            } else {
+                url = rawUrl;
+            }
+
+            //check to see if url exists in FB
+            veListen = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    boolean urlExists = dataSnapshot.exists();
+
+                    if (urlExists) {
+                        Map<String, Object> rawkey = (Map<String, Object>) dataSnapshot.getValue();
+                        key = (String) rawkey.keySet().toArray()[0];
+
+                        lRef = mRef.child("lurls").child(key).child("luvRating");
+                        nRef = mRef.child("lurls").child(key).child("noLuvRating");
+                        uiRatingCounter(lRef, nRef);
+                    } else {
+                        luvRateTV.setText("0");
+                        noLuvRateTV.setText("0");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            mRef.child("lurls").orderByChild("url").equalTo(url).addListenerForSingleValueEvent(veListen);
+        }
+    }
+
+    public void uiRatingCounter(DatabaseReference lRef, DatabaseReference nRef){
+        lRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long luV = (Long) dataSnapshot.getValue();
+                luvRateTV.setText(luV.toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        nRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long noLuV = (Long) dataSnapshot.getValue();
+                noLuvRateTV.setText(noLuV.toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     public void rater_luv(View view) {
         luvrater = 1;
@@ -204,7 +285,15 @@ public class MainActivity extends Activity {
                         }
 
                     } else {
-                        mRef.child("lurls").push().setValue(lurl);
+                       // mRef.child("lurls").push().setValue(lurl);
+                        //create it
+                        String key = mRef.child("lurls").push().getKey();
+                        mRef.child("lurls").child(key).setValue(lurl);
+
+                        //bind to ui
+                        lRef = mRef.child("lurls").child(key).child("luvRating");
+                        nRef = mRef.child("lurls").child(key).child("noLuvRating");
+                        uiRatingCounter(lRef, nRef);
                     }
                 }
 
@@ -215,9 +304,6 @@ public class MainActivity extends Activity {
             };
 
             mRef.child("lurls").orderByChild("url").equalTo(url).addListenerForSingleValueEvent(veListen);
-
-//            String key = mRef.child("lurls").push().getKey();
-//            mRef.child("lurls").child(key).setValue(lurl);
         }
 
     }
