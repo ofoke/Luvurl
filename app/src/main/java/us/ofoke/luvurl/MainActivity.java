@@ -63,6 +63,8 @@ public class MainActivity extends Activity {
     private ImageButton noLuvRaterBtn;
     private TextView luvRateTV;
     private TextView noLuvRateTV;
+    private ImageButton hotBtn;
+    private ImageButton shareBtn;
 
     private int luvrater;
     private int noluvrater;
@@ -94,6 +96,9 @@ public class MainActivity extends Activity {
 
         luvRateTV = (TextView) findViewById(R.id.textview_luv);
         noLuvRateTV = (TextView) findViewById(R.id.textview_noluv);
+
+        hotBtn = (ImageButton) findViewById(R.id.bsheet_hot);
+        shareBtn = (ImageButton) findViewById(R.id.bsheet_share);
 
         mRef = FirebaseDatabase.getInstance().getReference();
         recyclerRef = mRef.child("lurls");
@@ -132,7 +137,6 @@ public class MainActivity extends Activity {
                     }
                 });
             }
-            //android.R.layout.two_line_list_item
         };
 
         mLinks.setAdapter(mRecyclerViewAdapter);
@@ -146,7 +150,7 @@ public class MainActivity extends Activity {
     private void initBottomSheet() {
         View bottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet);
         behavior = BottomSheetBehavior.from(bottomSheet);
-        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+/*        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 // React to state change
@@ -156,7 +160,15 @@ public class MainActivity extends Activity {
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 // React to dragging events
             }
-        });
+        });*/
+    }
+
+    public void hotBottomDrawer(View view){
+        if(behavior.getState() == 3) {
+            behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        } else if(behavior.getState() == 4){
+            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
     }
 
     public void urlInFB(String rawUrl) {
@@ -323,23 +335,9 @@ public class MainActivity extends Activity {
 
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-                //Log.v("md", dataSnapshot.toString());
-                //Log.v("mderror", databaseError.toString());
             }
         });
     }
-
-//    public void oh(View view) {
-//        String bob = myWebView.getUrl();
-//        Log.v("bob", bob);
-//
-//        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-//    }
-
-
-//    public WebView getMyWebView() {
-//        return myWebView;
-//    }
 
     @Override
     protected void onStart() {
@@ -355,13 +353,6 @@ public class MainActivity extends Activity {
         }
     }
 
-/*    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }*/
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -374,9 +365,16 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.go_back:
-                // openCustomTab();
+            case R.id.search:
+                myWebView.loadUrl("https://www.google.com");
                 return true;
+            case R.id.refresh:
+                myWebView.reload();
+                return true;
+            case R.id.go_back:
+                myWebView.goBack();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

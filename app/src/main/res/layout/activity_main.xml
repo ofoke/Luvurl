@@ -20,6 +20,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/gray"
             android:elevation="4dp" />
 
         <WebView
@@ -103,6 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/transparent"
+                android:onClick="hotBottomDrawer"
                 android:paddingLeft="35dp"
                 android:src="@drawable/ic_whatshot_black_24dp" />
 
@@ -119,14 +121,36 @@
                     android:text="@string/sheet_subtitle_text"
                     android:textColor="@color/dark_text_secondary_icons"
                     android:textSize="16sp"/>-->
-
-        <LinearLayout
+        <View
+            android:layout_height="1dp"
             android:layout_width="match_parent"
+            android:background="#90909090"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            />
+
+        <RadioGroup
+            android:id="@+id/luv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
             android:orientation="horizontal">
 
+            <RadioButton
+                android:id="@+id/radio_luv_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onLuvRadioButtonClicked"
+                android:text="love" />
 
+            <RadioButton
+                android:id="@+id/radio_luv_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onLuvRadioButtonClicked"
+                android:text="no love" />
+        </RadioGroup>
             <RadioGroup
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
@@ -161,62 +185,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onTimeRadioButtonClicked"
-                    android:text="4ever " />
+                    android:text="forever " />
             </RadioGroup>
 
 
-            <RadioGroup
-                android:id="@+id/luv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radio_luv_yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onLuvRadioButtonClicked"
-                    android:text="love" />
-
-                <RadioButton
-                    android:id="@+id/radio_luv_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onLuvRadioButtonClicked"
-                    android:text="no love" />
-            </RadioGroup>
-
-
-            <!--            <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@mipmap/ic_launcher"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/activity_vertical_margin"
-                            android:text="@string/sheet_more_text"/>-->
-        </LinearLayout>
+        <View
+            android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:background="#90909090"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rview"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="300dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:scrollbars="vertical" />
         <!--tools:listitem="@layout/link"-->
 
     </LinearLayout>
-
-    <!--    <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:src="@android:drawable/ic_dialog_email"
-            app:layout_anchor="@id/bottom_sheet"
-            app:layout_anchorGravity="bottom|end"
-            />-->
 
 </android.support.design.widget.CoordinatorLayout>
