@@ -19,6 +19,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -47,6 +48,7 @@ public class MainActivity extends Activity {
     private DatabaseReference mRef;
     private DatabaseReference lRef;
     private DatabaseReference nRef;
+    private DatabaseReference recyclerRef;
     private RecyclerView mLinks;
     private LinearLayoutManager mManager;
     private FirebaseRecyclerAdapter<Lurl, LinkHolder> mRecyclerViewAdapter;
@@ -94,6 +96,7 @@ public class MainActivity extends Activity {
         noLuvRateTV = (TextView) findViewById(R.id.textview_noluv);
 
         mRef = FirebaseDatabase.getInstance().getReference();
+        recyclerRef = mRef.child("lurls");
 
         myWebView = (WebView) findViewById(R.id.webview);
 
@@ -108,34 +111,31 @@ public class MainActivity extends Activity {
 
         myWebView.loadUrl("https://www.google.com");
 
-
-
         mLinks = (RecyclerView) findViewById(R.id.rview);
         mLinks.setHasFixedSize(true);
+        mLinks.setLayoutManager(new LinearLayoutManager(this));
+        //mManager = new LinearLayoutManager(this);
+       // mManager.setReverseLayout(false);
 
-        mManager = new LinearLayoutManager(this);
-        mManager.setReverseLayout(false);
+        //mLinks.setLayoutManager(mManager);
 
-        mLinks.setLayoutManager(mManager);
+        mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Lurl, LinkHolder>(Lurl.class, android.R.layout.two_line_list_item, LinkHolder.class, recyclerRef) {
+            @Override
+            protected void populateViewHolder(final LinkHolder viewHolder, final Lurl model, final int position) {
+                viewHolder.setUrl(model.getUrl());
 
-        // THIS IS TEMP
-//        mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Lurl, LinkHolder>(Lurl.class, R.layout.link, LinkHolder.class, mRef) {
-//            @Override
-//            protected void populateViewHolder(LinkHolder viewHolder, Lurl model, final int position) {
-//                viewHolder.setUrl(model.getUrl());
-//
-//                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        mRecyclerViewAdapter.getRef(position);
-//                        Log.w(TAG, "You clicked on "+position);
-//                    }
-//                });
-//            }
-//            //android.R.layout.two_line_list_item
-//        };
-//
-//        mLinks.setAdapter(mRecyclerViewAdapter);
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        myWebView.loadUrl(model.getUrl());
+                        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }
+                });
+            }
+            //android.R.layout.two_line_list_item
+        };
+
+        mLinks.setAdapter(mRecyclerViewAdapter);
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
@@ -159,8 +159,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    public void urlInFB(String rawUrl){
-
+    public void urlInFB(String rawUrl) {
         if (null != rawUrl && rawUrl.length() > 0) {
             if (rawUrl.contains("?")) {
                 //url cleanup - remove everything after ?
@@ -200,7 +199,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void uiRatingCounter(DatabaseReference lRef, DatabaseReference nRef){
+    public void uiRatingCounter(DatabaseReference lRef, DatabaseReference nRef) {
         lRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -269,7 +268,7 @@ public class MainActivity extends Activity {
                         //get key cuz getKey() doesn't work here
                         Map<String, Object> rawkey = (Map<String, Object>) dataSnapshot.getValue();
                         key = (String) rawkey.keySet().toArray()[0];
-                       // Log.v("thekey", key);
+                        // Log.v("thekey", key);
 
                         //get luvrating and noluvrating
                         ratingsCum = (Map<String, Long>) rawkey.values().toArray()[0];
@@ -285,7 +284,7 @@ public class MainActivity extends Activity {
                         }
 
                     } else {
-                       // mRef.child("lurls").push().setValue(lurl);
+                        // mRef.child("lurls").push().setValue(lurl);
                         //create it
                         String key = mRef.child("lurls").push().getKey();
                         mRef.child("lurls").child(key).setValue(lurl);
@@ -305,7 +304,6 @@ public class MainActivity extends Activity {
 
             mRef.child("lurls").orderByChild("url").equalTo(url).addListenerForSingleValueEvent(veListen);
         }
-
     }
 
 
@@ -331,23 +329,21 @@ public class MainActivity extends Activity {
         });
     }
 
-    public void oh(View view) {
-        String bob = myWebView.getUrl();
-        Log.v("bob", bob);
+//    public void oh(View view) {
+//        String bob = myWebView.getUrl();
+//        Log.v("bob", bob);
+//
+//        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//    }
 
-        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-    }
 
-
-    public WebView getMyWebView() {
-        return myWebView;
-    }
+//    public WebView getMyWebView() {
+//        return myWebView;
+//    }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-
     }
 
     @Override
@@ -387,7 +383,7 @@ public class MainActivity extends Activity {
     }
 
 
-/*    public void onTimeRadioButtonClicked(View view) {
+    public void onTimeRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 
@@ -410,9 +406,9 @@ public class MainActivity extends Activity {
                     // Ninjas rule
                     break;
         }
-    }*/
+    }
 
-/*    public void onLuvRadioButtonClicked(View view) {
+    public void onLuvRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 
@@ -427,7 +423,7 @@ public class MainActivity extends Activity {
                     // Ninjas rule
                     break;
         }
-    }*/
+    }
 
 
     public static class LinkHolder extends RecyclerView.ViewHolder {
@@ -436,8 +432,6 @@ public class MainActivity extends Activity {
         public LinkHolder(View itemView) {
             super(itemView);
             mView = itemView;
-
-
         }
 
 //        public void setName(String name) {
@@ -446,7 +440,8 @@ public class MainActivity extends Activity {
 //        }
 
         public void setUrl(String text) {
-            TextView field = (TextView) mView.findViewById(R.id.link);
+            //TextView field = (TextView) mView.findViewById(R.id.link);
+            TextView field = (TextView) mView.findViewById(android.R.id.text1);
             field.setText(text);
         }
     }

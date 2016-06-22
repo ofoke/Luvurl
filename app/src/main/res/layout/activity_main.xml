@@ -188,12 +188,6 @@
                     android:text="no love" />
             </RadioGroup>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rview"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                tools:listitem="@layout/link" />
-
 
             <!--            <ImageView
                             android:layout_width="wrap_content"
@@ -207,6 +201,11 @@
                             android:text="@string/sheet_more_text"/>-->
         </LinearLayout>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rview"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+        <!--tools:listitem="@layout/link"-->
 
     </LinearLayout>
 
