@@ -141,6 +141,7 @@ public class MainActivity extends Activity {
 
         mLinks.setAdapter(mRecyclerViewAdapter);
 
+
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         initBottomSheet();
@@ -431,11 +432,6 @@ public class MainActivity extends Activity {
             super(itemView);
             mView = itemView;
         }
-
-//        public void setName(String name) {
-//            TextView field = (TextView) mView.findViewById(R.id.name_text);
-//            field.setText(name);
-//        }
 
         public void setUrl(String text) {
             //TextView field = (TextView) mView.findViewById(R.id.link);
