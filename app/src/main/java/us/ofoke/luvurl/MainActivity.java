@@ -20,6 +20,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -40,6 +41,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 //public class MainActivity extends AppCompatActivity {
 public class MainActivity extends Activity {
@@ -49,6 +51,7 @@ public class MainActivity extends Activity {
     private DatabaseReference lRef;
     private DatabaseReference nRef;
     private DatabaseReference recyclerRef;
+    private Query recRef;
     private RecyclerView mLinks;
     private LinearLayoutManager mManager;
     private FirebaseRecyclerAdapter<Lurl, LinkHolder> mRecyclerViewAdapter;
@@ -102,6 +105,7 @@ public class MainActivity extends Activity {
 
         mRef = FirebaseDatabase.getInstance().getReference();
         recyclerRef = mRef.child("lurls");
+        recRef = recyclerRef.orderByChild("luvRating").limitToLast(25);
 
         myWebView = (WebView) findViewById(R.id.webview);
 
@@ -124,7 +128,22 @@ public class MainActivity extends Activity {
 
         //mLinks.setLayoutManager(mManager);
 
-        mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Lurl, LinkHolder>(Lurl.class, android.R.layout.two_line_list_item, LinkHolder.class, recyclerRef) {
+       // mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Lurl, LinkHolder>(Lurl.class, android.R.layout.two_line_list_item, LinkHolder.class, recyclerRef) {
+        queryRunner(recRef, true);
+
+       // mLinks.setAdapter(mRecyclerViewAdapter);
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
+        initBottomSheet();
+    }
+
+    public void queryRunner(Query q, boolean b) {
+        if(mRecyclerViewAdapter != null) {
+            mRecyclerViewAdapter.cleanup();
+        }
+
+        mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Lurl, LinkHolder>(Lurl.class, android.R.layout.two_line_list_item, LinkHolder.class, recRef) {
             @Override
             protected void populateViewHolder(final LinkHolder viewHolder, final Lurl model, final int position) {
                 viewHolder.setUrl(model.getUrl());
@@ -141,10 +160,13 @@ public class MainActivity extends Activity {
 
         mLinks.setAdapter(mRecyclerViewAdapter);
 
+        //descending sort hack
+        if(b){
+            LinearLayoutManager llm = (LinearLayoutManager) mLinks.getLayoutManager();
+            llm.setReverseLayout(true);
+           // mLinks.smoothScrollToPosition(0);
+        }
 
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-
-        initBottomSheet();
     }
 
 
@@ -218,6 +240,7 @@ public class MainActivity extends Activity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Long luV = (Long) dataSnapshot.getValue();
                 luvRateTV.setText(luV.toString());
+
             }
 
             @Override
@@ -231,6 +254,7 @@ public class MainActivity extends Activity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Long noLuV = (Long) dataSnapshot.getValue();
                 noLuvRateTV.setText(noLuV.toString());
+
             }
 
             @Override
@@ -345,14 +369,16 @@ public class MainActivity extends Activity {
         super.onStart();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
+/*    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
         if (mRecyclerViewAdapter != null) {
             mRecyclerViewAdapter.cleanup();
         }
-    }
+    }*/
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -390,19 +416,19 @@ public class MainActivity extends Activity {
         switch(view.getId()) {
             case R.id.radio_time_hour:
                 if (checked)
-                    // Pirates are the best
+                    queryConfig();
                     break;
             case R.id.radio_time_day:
                 if (checked)
-                    // Ninjas rule
+                    queryConfig();
                     break;
-            case R.id.radio_time_week:
+/*            case R.id.radio_time_week:
                 if (checked)
                     // Pirates are the best
-                    break;
+                    break;*/
             case R.id.radio_time_4ever:
                 if (checked)
-                    // Ninjas rule
+                    queryConfig();
                     break;
         }
     }
@@ -415,15 +441,44 @@ public class MainActivity extends Activity {
         switch(view.getId()) {
             case R.id.radio_luv_yes:
                 if (checked)
-                    // Pirates are the best
+//                recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(25);
+//                queryRunner(recRef, true);
+                queryConfig();
                     break;
             case R.id.radio_luv_no:
                 if (checked)
-                    // Ninjas rule
+//                    recRef = mRef.child("lurls").orderByChild("noLuvRating").limitToLast(25);
+//                queryRunner(recRef, true);
+                queryConfig();
                     break;
         }
     }
 
+
+    public void queryConfig(){
+        RadioGroup rgtime = (RadioGroup) findViewById(R.id.timegroup);
+        int rgt = rgtime.getCheckedRadioButtonId();
+        RadioButton rbtime = (RadioButton) findViewById(rgt);
+        String rbtimetext = (String) rbtime.getText();
+
+        RadioGroup rgluv = (RadioGroup) findViewById(R.id.luvgroup);
+        int rgl = rgluv.getCheckedRadioButtonId();
+        RadioButton rbluv = (RadioButton) findViewById(rgl);
+        String rbluvtext = (String) rbluv.getText();
+
+        if(rbluvtext.contains("love") & rbtimetext.contains("forever")){
+            recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(25);
+           queryRunner(recRef, true);
+        } else if (rbluvtext.contains("love") & rbtimetext.contains("day")) {
+            Long timeback = System.currentTimeMillis() - (1* TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+            recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(25).endAt(timeback, "timestamp");
+            queryRunner(recRef, true);
+        } else if (rbluvtext.contains("love") & rbtimetext.contains("hour")) {
+            Long timeback = System.currentTimeMillis() - (1/24 * TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+            recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(25).endAt(timeback, "timestamp");
+            queryRunner(recRef, true);
+        }
+    }
 
     public static class LinkHolder extends RecyclerView.ViewHolder {
         View mView;

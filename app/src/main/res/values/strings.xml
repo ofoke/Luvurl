@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Luvurl</string>
+    <string name="app_name">luvurl</string>
     <string name="new_search">New Search</string>
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
