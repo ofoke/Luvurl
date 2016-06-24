@@ -148,6 +148,7 @@ public class MainActivity extends Activity {
         if (b) {
             LinearLayoutManager llm = (LinearLayoutManager) mLinks.getLayoutManager();
             llm.setReverseLayout(true);
+            llm.setStackFromEnd(true);
         }
     }
 
