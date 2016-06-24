@@ -37,23 +37,14 @@
         android:layout_height="wrap_content"
         android:background="@color/gray"
         android:elevation="4dp"
+        android:gravity="top"
         android:minHeight="50dp"
         android:orientation="vertical"
         android:padding="5dp"
-        android:gravity="top"
         app:behavior_peekHeight="50dp"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
         <!--android:padding="@dimen/activity_vertical_margin"-->
-
-        <!--        <TextView
-                    android:id="@+id/sheetTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/sheet_title_text"
-                    android:textColor="@color/dark_text"
-                    android:textSize="18sp" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -112,24 +103,12 @@
 
         </LinearLayout>
 
-        <!--        <TextView
-                    android:id="@+id/sheetSubtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/sheetTitle"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:lines="2"
-                    android:text="@string/sheet_subtitle_text"
-                    android:textColor="@color/dark_text_secondary_icons"
-                    android:textSize="16sp"/>-->
         <View
-            android:layout_height="1dp"
             android:layout_width="match_parent"
-            android:background="#90909090"
+            android:layout_height="1dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
-            />
+            android:background="#90909090" />
 
         <RadioGroup
             android:id="@+id/luvgroup"
@@ -143,84 +122,79 @@
                 android:id="@+id/radio_luv_yes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="25dp"
                 android:checked="true"
                 android:onClick="onLuvRadioButtonClicked"
-                android:layout_marginRight="20dp"
-                android:text="love" />
+                android:text="love"
+                android:buttonTint="@color/colorAccent"
+                />
 
             <RadioButton
                 android:id="@+id/radio_luv_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onLuvRadioButtonClicked"
-                android:text="no love" />
+                android:text="no love"
+                android:buttonTint="@color/colorAccent"
+                />
         </RadioGroup>
-<!--
-            <RadioGroup
-                android:id="@+id/timegroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
+        <!--
+                    <RadioGroup
+                        android:id="@+id/timegroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/radio_time_hour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onTimeRadioButtonClicked"
-                    android:text="hour " />
+                        <RadioButton
+                            android:id="@+id/radio_time_hour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="onTimeRadioButtonClicked"
+                            android:text="hour " />
 
-                <RadioButton
-                    android:id="@+id/radio_time_day"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onTimeRadioButtonClicked"
-                    android:text="day " />
+                        <RadioButton
+                            android:id="@+id/radio_time_day"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="onTimeRadioButtonClicked"
+                            android:text="day " />
 
-                <RadioButton
-                    android:id="@+id/radio_time_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onTimeRadioButtonClicked"
-                    android:text="week " />
+                        <RadioButton
+                            android:id="@+id/radio_time_week"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="onTimeRadioButtonClicked"
+                            android:text="week " />
 
-                <RadioButton
-                    android:id="@+id/radio_time_4ever"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:onClick="onTimeRadioButtonClicked"
-                    android:text="forever " />
-            </RadioGroup>
--->
+                        <RadioButton
+                            android:id="@+id/radio_time_4ever"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:onClick="onTimeRadioButtonClicked"
+                            android:text="forever " />
+                    </RadioGroup>
+        -->
 
 
         <View
-            android:layout_height="1dp"
             android:layout_width="match_parent"
-            android:background="#90909090"
+            android:layout_height="1dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
-            />
-<!--<android.support.v7.widget.ContentFrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="300dp"
-    android:layout_gravity="top">-->
+            android:background="#90909090" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rview"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:scrollbars="vertical"
-        android:scrollIndicators="start"
-        />
-    <!--tools:listitem="@layout/link"-->
-
-<!--</android.support.v7.widget.ContentFrameLayout>-->
-
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:scrollIndicators="start"
+            android:scrollbars="vertical" />
+        <!--tools:listitem="@layout/link"-->
 
     </LinearLayout>
 

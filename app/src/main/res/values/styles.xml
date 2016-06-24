@@ -10,6 +10,9 @@
 
     </style>
 
-
+    <style name="MyRadioButton" parent="AppTheme">
+        <!--<item name="colorControlNormal">@color/colorAccent</item>-->
+        <!--<item name="colorControlActivated">@color/colorAccent</item>-->
+    </style>
 
 </resources>

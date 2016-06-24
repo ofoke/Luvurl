@@ -2,7 +2,6 @@ package us.ofoke.luvurl;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CoordinatorLayout;
@@ -10,8 +9,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-//import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,15 +33,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONObject;
-
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-//public class MainActivity extends AppCompatActivity {
 public class MainActivity extends Activity {
 
     public static final String TAG = "Lurl";
@@ -76,9 +66,6 @@ public class MainActivity extends Activity {
     private Long noLuvRatingCum;
     private Map<String, Long> ratingsCum;
     private String key;
-
-    private MutableData luvRatingCumMd;
-    private MutableData noLuvRatingCumMd;
 
     private String url;
     private ChildEventListener ceListen;
@@ -126,13 +113,9 @@ public class MainActivity extends Activity {
         mLinks.setLayoutManager(new LinearLayoutManager(this));
         //mManager = new LinearLayoutManager(this);
         // mManager.setReverseLayout(false);
-
         //mLinks.setLayoutManager(mManager);
 
-        // mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Lurl, LinkHolder>(Lurl.class, android.R.layout.two_line_list_item, LinkHolder.class, recyclerRef) {
         queryRunner(recRef, true);
-
-        // mLinks.setAdapter(mRecyclerViewAdapter);
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
@@ -165,11 +148,8 @@ public class MainActivity extends Activity {
         if (b) {
             LinearLayoutManager llm = (LinearLayoutManager) mLinks.getLayoutManager();
             llm.setReverseLayout(true);
-            // mLinks.smoothScrollToPosition(0);
         }
-
     }
-
 
     private void initBottomSheet() {
         View bottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet);
@@ -198,7 +178,7 @@ public class MainActivity extends Activity {
     public void shareUrl(View view) {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT,  myWebView.getUrl() );
+        sendIntent.putExtra(Intent.EXTRA_TEXT, myWebView.getUrl());
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, ""));
     }
@@ -249,7 +229,6 @@ public class MainActivity extends Activity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Long luV = (Long) dataSnapshot.getValue();
                 luvRateTV.setText(luV.toString());
-
             }
 
             @Override
@@ -314,7 +293,6 @@ public class MainActivity extends Activity {
                         //get key cuz getKey() doesn't work here
                         Map<String, Object> rawkey = (Map<String, Object>) dataSnapshot.getValue();
                         key = (String) rawkey.keySet().toArray()[0];
-                        // Log.v("thekey", key);
 
                         //get luvrating and noluvrating
                         ratingsCum = (Map<String, Long>) rawkey.values().toArray()[0];
@@ -330,7 +308,6 @@ public class MainActivity extends Activity {
                         }
 
                     } else {
-                        // mRef.child("lurls").push().setValue(lurl);
                         //create it
                         String key = mRef.child("lurls").push().getKey();
                         mRef.child("lurls").child(key).setValue(lurl);
@@ -455,13 +432,13 @@ public class MainActivity extends Activity {
             case R.id.radio_luv_yes:
                 if (checked)
                     recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(50);
-                    queryRunner(recRef, true);
-                 // queryConfig();
+                queryRunner(recRef, true);
+                // queryConfig();
                 break;
             case R.id.radio_luv_no:
                 if (checked)
                     recRef = mRef.child("lurls").orderByChild("noLuvRating").limitToLast(50);
-                    queryRunner(recRef, true);
+                queryRunner(recRef, true);
                 // queryConfig();
                 break;
         }
