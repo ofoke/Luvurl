@@ -159,11 +159,10 @@ public class MainActivity extends Activity {
         // mManager.setReverseLayout(false);
         //mLinks.setLayoutManager(mManager);
 
-        queryRunner(recRef, true);
-
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         initBottomSheet();
+
     }
 
     public void queryRunner(Query q, boolean b) {
@@ -413,6 +412,9 @@ public class MainActivity extends Activity {
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+
+        recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(50);
+        queryRunner(recRef, true);
     }
 
     @Override
