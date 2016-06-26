@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
     private DatabaseReference nRef;
     private DatabaseReference recyclerRef;
     private Query recRef;
-    private RecyclerView mLinks;
+    private RecyclerView mLinks = null;
     private LinearLayoutManager mManager;
     private FirebaseRecyclerAdapter<Lurl, LinkHolder> mRecyclerViewAdapter;
 
@@ -134,6 +134,9 @@ public class MainActivity extends Activity {
                     }
                 });
 
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
+        initBottomSheet();
 
         mRef = FirebaseDatabase.getInstance().getReference();
         recyclerRef = mRef.child("lurls");
@@ -158,11 +161,6 @@ public class MainActivity extends Activity {
         //mManager = new LinearLayoutManager(this);
         // mManager.setReverseLayout(false);
         //mLinks.setLayoutManager(mManager);
-
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-
-        initBottomSheet();
-
     }
 
     public void queryRunner(Query q, boolean b) {
@@ -172,7 +170,8 @@ public class MainActivity extends Activity {
 
         mRecyclerViewAdapter = new FirebaseRecyclerAdapter<Lurl, LinkHolder>(Lurl.class, android.R.layout.two_line_list_item, LinkHolder.class, recRef) {
             @Override
-            protected void populateViewHolder(final LinkHolder viewHolder, final Lurl model, final int position) {
+            protected void populateViewHolder( LinkHolder viewHolder, final Lurl model, int position) {
+
                 viewHolder.setUrl(model.getUrl());
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
@@ -198,17 +197,32 @@ public class MainActivity extends Activity {
     private void initBottomSheet() {
         View bottomSheet = coordinatorLayout.findViewById(R.id.bottom_sheet);
         behavior = BottomSheetBehavior.from(bottomSheet);
-/*        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 // React to state change
+                if(newState == BottomSheetBehavior.STATE_EXPANDED){
+                    //update list
+                    RadioGroup rgluv = (RadioGroup) findViewById(R.id.luvgroup);
+                    int rgl = rgluv.getCheckedRadioButtonId();
+                    RadioButton rbluv = (RadioButton) findViewById(rgl);
+                    String rbluvtext = (String) rbluv.getText();
+
+                    if (rbluvtext.contains("no")) {
+                        recRef = mRef.child("lurls").orderByChild("noLuvRating").limitToLast(25);
+                        queryRunner(recRef, true);
+                    } else {
+                        recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(25);
+                        queryRunner(recRef, true);
+                    }
+                }
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 // React to dragging events
             }
-        });*/
+        });
     }
 
     public void hotBottomDrawer(View view) {
@@ -412,9 +426,6 @@ public class MainActivity extends Activity {
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-
-        recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(50);
-        queryRunner(recRef, true);
     }
 
     @Override
@@ -535,6 +546,7 @@ public class MainActivity extends Activity {
 
         public LinkHolder(View itemView) {
             super(itemView);
+
             mView = itemView;
         }
 
