@@ -21,7 +21,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/gray"
-            android:elevation="4dp" />
+            android:elevation="4dp">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="110dp"
+                android:id="@+id/pbar"
+                android:visibility="gone"
+                style="@android:style/Widget.Material.ProgressBar.Small" />
+        </android.widget.Toolbar>
+
+
 
         <WebView
             android:id="@+id/webview"
