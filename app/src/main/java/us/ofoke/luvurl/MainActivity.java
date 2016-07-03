@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 //import android.util.Log;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,6 +43,8 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.util.Map;
 
@@ -78,14 +81,16 @@ public class MainActivity extends Activity {
     private String key;
 
     private String url;
-    private ChildEventListener ceListen;
     private ValueEventListener veListen;
-    private ValueEventListener uiListen;
 
     private Lurl lurl = null;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
+    private static final String URL_LIST_LENGTH_KEY = "url_list_length";
+    private int list_length = 25;
 
     private ProgressBar mProgress;
 
@@ -144,7 +149,7 @@ public class MainActivity extends Activity {
 
         mRef = FirebaseDatabase.getInstance().getReference();
         recyclerRef = mRef.child("lurls");
-        recRef = recyclerRef.orderByChild("luvRating").limitToLast(25);
+        recRef = recyclerRef.orderByChild("luvRating").limitToLast(list_length);
 
         myWebView = (WebView) findViewById(R.id.webview);
 
@@ -171,6 +176,40 @@ public class MainActivity extends Activity {
         //mManager = new LinearLayoutManager(this);
         // mManager.setReverseLayout(false);
         //mLinks.setLayoutManager(mManager);
+
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        //dev mode
+/*        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettings(configSettings);*/
+
+        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+
+        fetchListLengthConfig();
+    }
+
+    private void fetchListLengthConfig() {
+        long cacheExpiration = 3600; // 1 hour in seconds.
+/*        if (mFirebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
+            cacheExpiration = 0;
+        }*/
+
+        mFirebaseRemoteConfig.fetch(cacheExpiration)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Fetch Succeeded");
+                            // Once the config is successfully fetched it must be activated before newly fetched
+                            // values are returned.
+                            mFirebaseRemoteConfig.activateFetched();
+                        } else {
+                            Log.d(TAG, "Fetch failed");
+                        }
+                        list_length = (int) mFirebaseRemoteConfig.getLong(URL_LIST_LENGTH_KEY);
+                    }
+                });
     }
 
     public void queryRunner(Query q, boolean b) {
@@ -219,10 +258,10 @@ public class MainActivity extends Activity {
                     String rbluvtext = (String) rbluv.getText();
 
                     if (rbluvtext.contains("no")) {
-                        recRef = mRef.child("lurls").orderByChild("noLuvRating").limitToLast(25);
+                        recRef = mRef.child("lurls").orderByChild("noLuvRating").limitToLast(list_length);
                         queryRunner(recRef, true);
                     } else {
-                        recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(25);
+                        recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(list_length);
                         queryRunner(recRef, true);
                     }
                 }
@@ -392,10 +431,10 @@ public class MainActivity extends Activity {
                         String rbluvtext = (String) rbluv.getText();
 
                         if (rbluvtext.contains("no")) {
-                            recRef = mRef.child("lurls").orderByChild("noLuvRating").limitToLast(25);
+                            recRef = mRef.child("lurls").orderByChild("noLuvRating").limitToLast(list_length);
                             queryRunner(recRef, true);
                         } else {
-                            recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(25);
+                            recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(list_length);
                             queryRunner(recRef, true);
                         }
                     }
@@ -436,6 +475,14 @@ public class MainActivity extends Activity {
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mRecyclerViewAdapter != null) {
+            mRecyclerViewAdapter.cleanup();
+        }
     }
 
     @Override
@@ -507,13 +554,13 @@ public class MainActivity extends Activity {
         switch (view.getId()) {
             case R.id.radio_luv_yes:
                 if (checked)
-                    recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(50);
+                    recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(list_length);
                 queryRunner(recRef, true);
                 // queryConfig();
                 break;
             case R.id.radio_luv_no:
                 if (checked)
-                    recRef = mRef.child("lurls").orderByChild("noLuvRating").limitToLast(50);
+                    recRef = mRef.child("lurls").orderByChild("noLuvRating").limitToLast(list_length);
                 queryRunner(recRef, true);
                 // queryConfig();
                 break;
@@ -534,7 +581,7 @@ public class MainActivity extends Activity {
         String rbluvtext = (String) rbluv.getText();
 
         if (rbluvtext.contains("love") & rbtimetext.contains("forever")) {
-            recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(25);
+            recRef = mRef.child("lurls").orderByChild("luvRating").limitToLast(list_length);
             queryRunner(recRef, true);
         } else if (rbluvtext.contains("love") & rbtimetext.contains("day")) {
             Long timeback = System.currentTimeMillis() - (TimeUnit.MILLISECONDS.convert(2, TimeUnit.DAYS));
